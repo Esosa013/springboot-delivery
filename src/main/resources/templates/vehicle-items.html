@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Manage Vehicle Items</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-white">
+
+<div class="container mt-4">
+    <h2>📦 Items for Vehicle: <span th:text="${vehicle.plateNumber}"></span></h2>
+    <a href="/vehicles" class="btn btn-secondary mb-3">← Back to Vehicles</a>
+
+    <h4>Current Items</h4>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Code</th>
+                <th>Weight</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="item : ${vehicleItems}">
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.code}"></td>
+                <td th:text="${item.weight}"></td>
+                <td>
+                    <a th:href="@{'/vehicles/' + ${vehicle.id} + '/items/remove/' + ${item.id}}" 
+                       class="btn btn-danger btn-sm">Remove</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 class="mt-4">Add Item</h4>
+    <form th:action="@{'/vehicles/' + ${vehicle.id} + '/items/add'}" method="post">
+        <div class="mb-3">
+            <select name="itemId" class="form-select" required>
+                <option value="">Select an item...</option>
+                <option th:each="item : ${allItems}" 
+                        th:value="${item.id}" 
+                        th:text="${item.name + ' (' + item.code + ')'}">
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Item</button>
+    </form>
+</div>
+
+</body>
+</html>
